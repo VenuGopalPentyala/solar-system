@@ -40,7 +40,7 @@ jobs:
             run: npm test
 
           - name: Archiving Tets Results
-            if: steps.npm-test-id.outcome == 'failure' || steps.npm-test-id.outcome == 'success'
+            if: failure() && (steps.npm-test-id.outcome == 'failure' || steps.npm-test-id.outcome == 'success')
             uses: actions/upload-artifact@v2
             with:
                 name: mocha-test-results
