@@ -14,23 +14,23 @@ env:
 jobs:
     unit-testing:
         name: Unit Testing
-        strategy:
-          matrix:
-            nodejs-version: [18, 19, 20]
-            os: [ubuntu-latest, macos-latest]
-            exclude:
-              - nodejs-version: 18
-                os: macos-latest
+        # strategy:
+        #   matrix:
+        #     nodejs-version: [18, 19, 20]
+        #     os: [ubuntu-latest, macos-latest]
+        #     exclude:
+        #       - nodejs-version: 18
+        #         os: macos-latest
         
-        runs-on: ${{ matrix.os }}
+        runs-on: ubuntu-latest
         steps:
           - name: Checkout Repo
             uses: actions/checkout@v4
           
-          - name: Setup NodeJs Version - ${{ matrix.nodejs-version }}
+          - name: Setup NodeJs Version - 18
             uses: actions/setup-node@v3
             with:
-              node-version: ${{ matrix.nodejs-version }}
+              node-version: 18
 
           - name: Install Dependenicies 
             run: npm install
@@ -43,3 +43,28 @@ jobs:
             with:
                 name: mocha-test-results
                 path: test-results.xml
+    
+    code-coverage:
+        name: Code Coverage
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout repository
+              uses: actions/checkout@v4
+
+            - name: setup NodeJs Version
+              uses: actions/setup-node@v3
+              with:
+                node-version: 18
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Check code coverage
+              run: npm run coverage
+
+            - name: Archive Test Result
+              uses: actions/upload-artifact@v3
+              with:
+                name: code-coverage-results
+                path: coverage
+                retention-days: 5
