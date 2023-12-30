@@ -46,6 +46,8 @@ jobs:
     permissions: 
       packages: write
     runs-on: ubuntu-latest
+    container: 
+      image: node:20
     needs: unit-testing
 
     steps:
