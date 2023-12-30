@@ -47,6 +47,11 @@ jobs:
     needs: unit-testing
 
     steps:
+      - name: set lower case owner name
+        run: |
+          echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
+        env:
+          OWNER: '${{ github.repository_owner }}'
       - uses: actions/checkout@v4
       - uses: docker/login-action@v2.2.0
         with:
